@@ -1,9 +1,13 @@
 #!/usr/bin/env node
 
 var app = require('../app');
-var debug = require('debug')('chat-for-inquiry:server');
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
+
+var debug = {
+  server: require('debug')('chat-for-inquiry:server'),
+  io: require('debug')('chat-for-inquiry:socket.io')
+};
 
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
@@ -56,9 +60,9 @@ function onListening() {
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  debug.server('Listening on ' + bind);
 }
 
 function onConnecting(socket) {
-  debug('a user connected');
+  debug.io('a user connected');
 }
