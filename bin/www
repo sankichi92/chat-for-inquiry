@@ -66,6 +66,11 @@ function onListening() {
 function onConnecting(socket) {
   debug.io('a user connected');
 
+  socket.on('message', function(msg) {
+    debug.io('message', msg);
+    io.emit('message', msg);
+  });
+
   socket.on('disconnect', function() {
     debug.io('user disconnected');
   });
