@@ -8,6 +8,7 @@ var debug = {
   server: require('debug')('chat-for-inquiry:server'),
   io: require('debug')('chat-for-inquiry:socket.io')
 };
+debug.io.log = console.log.bind(console);
 
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
