@@ -83,7 +83,6 @@ function onConnecting(socket) {
     });
   });
 
-  // TODO: 特定ユーザに送信できるようにする
   socket.on('message from operator', function (data) {
     debug.io('message from operator', data);
     socket.broadcast.to(data.to).emit('message', data.msg);
