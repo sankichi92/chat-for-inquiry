@@ -91,6 +91,7 @@ function onConnecting(socket) {
 
   socket.on('disconnect', function () {
     debug.io('disconnected', socket.id);
+    io.to(OP_ROOM).emit('disconnect', socket.id);
   });
 
 }

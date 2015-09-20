@@ -15,6 +15,11 @@ socket.on('connection', function (id) {
   createPanel(id);
 });
 
+socket.on('disconnect', function (id) {
+  console.log('disconnect', id);
+  $('#' + id).find('button.send').attr('disabled', '');
+});
+
 function createPanel(id) {
   var panel = template.clone().attr('id', id).appendTo('#panels');
   panel.find('form').submit(function () {
