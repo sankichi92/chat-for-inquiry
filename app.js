@@ -3,7 +3,7 @@ var path = require('path');
 var logger = require('morgan');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var operator = require('./routes/operator');
 
 var app = express();
 
@@ -14,7 +14,7 @@ app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/users', users);
+app.use('/operator', operator);
 
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
