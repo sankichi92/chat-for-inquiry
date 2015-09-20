@@ -2,5 +2,9 @@ extends layout
 
 block content
   div.container
-    h1= title
-    p Welcome to #{title}
+    ul#logs
+    form.form-inline
+      div.form-group
+        input#message.form-control(type='text' autocomplete='off' placeholder='message')
+      button.btn.btn-primary(aria-label='Send')
+        span.glyphicon.glyphicon-send(aria-hidden='true')
