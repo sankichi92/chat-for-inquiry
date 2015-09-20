@@ -8,3 +8,6 @@ block content
         input#message.form-control(type='text' autocomplete='off' placeholder='message')
       button.btn.btn-primary(aria-label='Send')
         span.glyphicon.glyphicon-send(aria-hidden='true')
+  script(src='/socket.io/socket.io.js')
+  script.
+    var socket = io.connect();

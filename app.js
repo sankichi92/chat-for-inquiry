@@ -13,6 +13,7 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/bootstrap', express.static(path.join(__dirname, 'node_modules/bootstrap/dist')));
+app.use('/socket.io', express.static(path.join(__dirname, 'node_modules/socket.io/node_modules/socket.io-client')));
 
 app.use('/', routes);
 app.use('/operator', operator);
