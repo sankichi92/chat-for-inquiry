@@ -65,4 +65,8 @@ function onListening() {
 
 function onConnecting(socket) {
   debug.io('a user connected');
+
+  socket.on('disconnect', function() {
+    debug.io('user disconnected');
+  });
 }
