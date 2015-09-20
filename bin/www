@@ -63,15 +63,36 @@ function onListening() {
   debug.server('Listening on ' + bind);
 }
 
+const OP_ROOM = 'operator room';
+
 function onConnecting(socket) {
-  debug.io('a user connected');
+
+  // TODO: オペレータの認証を行うようにする
+  socket.on('operator', function () {
+    debug.io('operator connected');
+    socket.join(OP_ROOM);
+  });
 
   socket.on('message', function (msg) {
     debug.io('message', msg);
-    io.emit('message', msg);
+    emitToOperator(socket, 'message', {
+      from: socket.id,
+      msg: msg
+    });
+  });
+
+  // TODO: 特定ユーザに送信できるようにする
+  socket.on('message from operator', function (msg) {
+    debug.io('message from operator', msg);
+    socket.broadcast.emit('message', msg);
   });
 
   socket.on('disconnect', function () {
-    debug.io('user disconnected');
+    debug.io('disconnected');
   });
+
+}
+
+function emitToOperator(socket, event, data) {
+  socket.broadcast.to(OP_ROOM).emit(event, data);
 }
