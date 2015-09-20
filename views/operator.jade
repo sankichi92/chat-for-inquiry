@@ -1,15 +1,16 @@
 extends layout
+
 block content
   div.container-fluid
-    div.row
-      div.col-md-2
+    div#panels.row
+      div#panel.col-md-2.hidden
         div.panel.panel-default
-          div.panel-heading User 0
-          ul#logs.list-group
+          div.panel-heading User 1
+          ul.list-group
           div.panel-footer
             form.form-inline
               div.form-group
-                input#message.form-control(placeholder='message')
+                input.form-control(placeholder='message')
               button.btn.btn-primary
                 span.glyphicon.glyphicon-send(aria-hidden='true')
 block append scripts

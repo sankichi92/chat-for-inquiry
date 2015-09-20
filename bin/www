@@ -67,6 +67,7 @@ function onListening() {
 const OP_ROOM = 'operator room';
 
 function onConnecting(socket) {
+  emitToOperator(socket, 'connection', socket.id);
 
   // TODO: オペレータの認証を行うようにする
   socket.on('operator', function () {
@@ -75,7 +76,7 @@ function onConnecting(socket) {
   });
 
   socket.on('message', function (msg) {
-    debug.io('message', msg);
+    debug.io('message from user', msg);
     emitToOperator(socket, 'message', {
       from: socket.id,
       msg: msg
@@ -83,9 +84,9 @@ function onConnecting(socket) {
   });
 
   // TODO: 特定ユーザに送信できるようにする
-  socket.on('message from operator', function (msg) {
-    debug.io('message from operator', msg);
-    socket.broadcast.emit('message', msg);
+  socket.on('message from operator', function (data) {
+    debug.io('message from operator', data);
+    socket.broadcast.to(data.to).emit('message', data.msg);
   });
 
   socket.on('disconnect', function () {
