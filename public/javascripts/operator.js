@@ -1,30 +1,36 @@
+var template = $('#panel').remove().clone();
 var socket = io.connect();
-var isStarted = false;
-var panel = $('#panel');
+
 socket.emit('operator');
+
 socket.on('message', function (data) {
   console.log('message', data);
-  appendMessage(data.from, data.msg);
+  var panel = $('#' + data.from);
+  if (!panel[0]) panel = createPanel(data.id);
+  appendMessage(panel, data.msg, false);
 });
-socket.on('connection', function (uid) {
-  console.log('connection', uid);
-  if (isStarted) {
-    panel.clone().attr('id', uid).appendTo('#panels');
-  } else {
-    panel.removeClass('hidden').attr('id', uid);
-    isStarted = true;
-  }
-  $('#' + uid).find('form').submit(function () {
-    var input = $('#' + uid + ' input');
-    socket.emit('message from operator', {
-      to: uid,
-      msg: input.val()
-    });
-    appendMessage(uid, input.val());
+
+socket.on('connection', function (id) {
+  console.log('connection', id);
+  createPanel(id);
+});
+
+function createPanel(id) {
+  var panel = template.clone().attr('id', id).appendTo('#panels');
+  panel.find('form').submit(function () {
+    var input = $(this.message);
+    socket.emit('message from operator', {to: id, msg: input.val()});
+    appendMessage(panel, input.val(), true);
     input.val('');
     return false;
   });
-});
-function appendMessage(from, msg) {
-  $('#' + from).find('ul').append($('<li>').addClass('list-group-item').text(msg));
+  panel.find('button.close').click(function () {
+    panel.remove();
+  });
+  return panel;
+}
+
+function appendMessage(panel, msg, isMine) {
+  var clazz = isMine ? 'text-right' : 'list-group-item-info';
+  panel.find('ul').append($('<li>').addClass('list-group-item ' + clazz).text(msg));
 }

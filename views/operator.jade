@@ -3,15 +3,19 @@ extends layout
 block content
   div.container-fluid
     div#panels.row
-      div#panel.col-md-2.hidden
+      div#panel.col-lg-2.col-md-3.col-sm-4.col-xs-6
         div.panel.panel-default
-          div.panel-heading User 1
+          div.panel-heading
+            button.close(aria-label='close')
+              span(aria-hidden='true') &times;
+            | User
           ul.list-group
           div.panel-footer
-            form.form-inline
-              div.form-group
-                input.form-control(placeholder='message')
-              button.btn.btn-primary
-                span.glyphicon.glyphicon-send(aria-hidden='true')
+            form
+              div.input-group
+                input.form-control(name='message' autocomplete='off' placeholder='message')
+                span.input-group-btn
+                  button.send.btn.btn-primary(aria-label='Send')
+                    span.glyphicon.glyphicon-send(aria-hidden='true')
 block append scripts
   script(src='/javascripts/operator.js')

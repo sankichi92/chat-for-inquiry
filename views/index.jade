@@ -2,11 +2,18 @@ extends layout
 
 block content
   div.container
-    ul#logs
-    form.form-inline
-      div.form-group
-        input#message.form-control(type='text' autocomplete='off' placeholder='message')
-      button.btn.btn-primary(aria-label='Send')
-        span.glyphicon.glyphicon-send(aria-hidden='true')
+    div.row
+      div.col-md-6.col-md-offset-3
+        div.panel.panel-default
+          div.panel-heading
+            h3.panel-title Chat for inquiry
+          ul#logs.list-group
+          div.panel-footer
+            form
+              div.input-group
+                input.form-control(name='message' autocomplete='off' placeholder='message')
+                span.input-group-btn
+                  button.btn.btn-primary(aria-label='Send')
+                    span.glyphicon.glyphicon-send(aria-hidden='true')
 block append scripts
   script(src='/javascripts/index.js')
