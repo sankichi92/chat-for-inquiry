@@ -18,14 +18,14 @@ app.use('/socket.io', express.static(path.join(__dirname, 'node_modules/socket.i
 app.use('/', routes);
 app.use('/operator', operator);
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
 if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
+  app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
       message: err.message,
@@ -34,7 +34,7 @@ if (app.get('env') === 'development') {
   });
 }
 
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render('error', {
     message: err.message,
