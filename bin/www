@@ -77,6 +77,14 @@ function onConnecting(socket) {
     socket.join(OP_ROOM);
   });
 
+  socket.on('request logs', function(id) {
+    debug.io('operator requested logs', id);
+    var messages = db.fetchMessages(id, 1);
+    messages.on('data', function(log) {
+      socket.emit('log', log);
+    });
+  });
+
   socket.on('message', function (msg) {
     debug.io('message from user', msg);
     var data = {

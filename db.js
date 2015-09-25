@@ -18,5 +18,11 @@ module.exports = {
       if (err) return debug(err);
       debug(result);
     });
+  },
+  fetchMessages: function (id, skip) {
+    return messages.find({id: id}, {_id: 0})
+        .sort({timestamp: -1})
+        .skip(skip)
+        .limit(50);
   }
 };
