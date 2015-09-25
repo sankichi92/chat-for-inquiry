@@ -3,6 +3,7 @@
 var app = require('../app');
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
+var db = require('../db');
 
 var debug = {
   server: require('debug')('chat-for-inquiry:server'),
@@ -78,15 +79,19 @@ function onConnecting(socket) {
 
   socket.on('message', function (msg) {
     debug.io('message from user', msg);
-    socket.broadcast.to(OP_ROOM).emit('message', {
-      from: socket.id,
+    var data = {
+      id: socket.id,
       msg: msg
-    });
+    };
+    socket.broadcast.to(OP_ROOM).emit('message', data);
+    db.insertMessage(data);
   });
 
   socket.on('message from operator', function (data) {
     debug.io('message from operator', data);
-    socket.broadcast.to(data.to).emit('message', data.msg);
+    socket.broadcast.to(data.id).emit('message', data.msg);
+    data.from = 'operator';
+    db.insertMessage(data);
   });
 
   socket.on('disconnect', function () {
