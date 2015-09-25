@@ -37,7 +37,14 @@ socket.on('disconnect', function (id) {
 
 function createPanel(id) {
   userCount++;
-  var panel = template.clone().attr('id', id).find('.panel-heading').append(userCount).end().appendTo('#panels');
+  var panel = template.clone()
+    .attr('id', id)
+    .find('.panel-heading')
+    .append(userCount)
+    .end()
+    .appendTo('#panels')
+    .hide()
+    .show('slow');
   panel.find('form').submit(function () {
     var input = $(this.message);
     socket.emit('message from operator', {id: id, msg: input.val()});
