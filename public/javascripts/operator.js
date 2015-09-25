@@ -1,4 +1,5 @@
 var template = $('#panel').remove().clone();
+var userCount = 0;
 var socket = io.connect();
 
 socket.emit('operator');
@@ -27,11 +28,16 @@ socket.on('connection', function (id) {
 
 socket.on('disconnect', function (id) {
   console.log('disconnect', id);
-  $('#' + id).find('button.send').attr('disabled', '');
+  $('#' + id).find('.panel')
+      .removeClass('panel-default')
+      .addClass('panel-danger')
+      .find('button.send')
+      .attr('disabled', '');
 });
 
 function createPanel(id) {
-  var panel = template.clone().attr('id', id).appendTo('#panels');
+  userCount++;
+  var panel = template.clone().attr('id', id).find('.panel-heading').append(userCount).end().appendTo('#panels');
   panel.find('form').submit(function () {
     var input = $(this.message);
     socket.emit('message from operator', {id: id, msg: input.val()});
@@ -40,14 +46,18 @@ function createPanel(id) {
     return false;
   });
   panel.find('button.close').click(function () {
-    panel.remove();
+    panel.hide('slow', function () {
+      panel.remove();
+    });
   });
   return panel;
 }
 
 function appendMessage(panel, msg, isMine) {
   var clazz = isMine ? 'text-right' : 'list-group-item-info';
-  panel.find('ul').append($('<li>').addClass('list-group-item ' + clazz).text(msg));
+  var panelBody = panel.find('ul');
+  panelBody.append($('<li>').addClass('list-group-item ' + clazz).text(msg))
+      .animate({scrollTop: panelBody.prop('scrollHeight')}, 'slow');
 }
 
 function prependMessage(panel, msg, isMine) {

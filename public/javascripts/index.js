@@ -15,5 +15,7 @@ socket.on('message', function (msg) {
 
 function appendMessage(msg, isMine) {
   var clazz = isMine ? 'text-right' : 'list-group-item-info';
-  $('#logs').append($('<li>').addClass('list-group-item ' + clazz).text(msg));
+  var logs = $('#logs');
+  logs.append($('<li>').addClass('list-group-item ' + clazz).text(msg))
+      .animate({scrollTop: logs.prop('scrollHeight')}, 'slow');
 }
