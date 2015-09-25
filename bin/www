@@ -18,7 +18,7 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
-io.on('connection', onConnecting);
+io.on('connection', onConnection);
 
 function normalizePort(val) {
   var port = parseInt(val, 10);
@@ -67,11 +67,10 @@ function onListening() {
 
 const OP_ROOM = 'operator room';
 
-function onConnecting(socket) {
+function onConnection(socket) {
   debug.io('connected', socket.id);
   socket.broadcast.to(OP_ROOM).emit('connection', socket.id);
 
-  // TODO: オペレータの認証を行うようにする
   socket.on('operator', function () {
     debug.io('operator connected');
     socket.join(OP_ROOM);
@@ -106,5 +105,4 @@ function onConnecting(socket) {
     debug.io('disconnected', socket.id);
     io.to(OP_ROOM).emit('disconnect', socket.id);
   });
-
 }
